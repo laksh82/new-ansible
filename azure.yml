@@ -1,0 +1,22 @@
+  - name: Create Resource Group if it does not exist
+    azure.azcollection.azure_rm_resourcegroup:
+      name: "{{ resource_group }}"
+      location: "{{ az_location }}"
+      tags:
+        costcenter: "{{ tags.cost_center }}"
+        Solution: "{{ tags.solution }}"
+      state: present
+    #when: resource_group_info.resourcegroups | length == 0
+    register: resource_group
+ 
+  - name: Display Resource Group
+    debug:
+      var: resource_group.state.name
+
+site.yml
+---
+- hosts: all
+  become: false
+  gather_facts: false
+  roles:
+       - role: "{{ playbook_dir }}"
